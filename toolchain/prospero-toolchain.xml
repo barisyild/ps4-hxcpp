@@ -1,0 +1,41 @@
+<xml>
+    <!-- PROSPERO TOOLS -->
+    <set name="CXX" value="${PS5_PAYLOAD_SDK}/bin/prospero-clang++" />
+    <set name="HXCPP_CPP11" value="1" unless="HXCPP_NO_CPP11" />
+
+    <include name="toolchain/gcc-toolchain.xml"/>
+
+    <compiler id="prospero" exe="${CXX}">
+        <exe name="${CXX}" if="CXX" />
+        <flag value="-c"/>
+        <cppflag value='-Wall' />
+        <cppflag value='-Werror' />
+        <cppflag value='-g' />
+        <cppflag value='-o' />
+        <flag value='-D__ORBIS__'/>
+        <!-- <flag value='-I.'/> -->
+        <flag value='-w'/>
+        <flag value="-Wno-overflow" />
+        <cppflag value="-Wno-invalid-offsetof" />
+        <!-- <flag value="-DHX_LINUX"/> -->
+        <flag value="-DHXCPP_MULTI_THREADED" if="HXCPP_MULTI_THREADED"/>
+        <flag value="-DHXCPP_BIG_ENDIAN" if="HXCPP_BIG_ENDIAN"/>
+        <flag value="-DHXCPP_THREAD_INFO_PTHREAD" />
+        <include name="toolchain/common-defines.xml" />
+        <flag value="-I${HXCPP}/include"/>
+        <objdir value="obj/prospero${OBJEXT}/"/>
+        <outflag value="-o"/>
+        <ext value=".o"/>
+    </compiler>
+
+    <linker id="exe" exe="/opt/ps5-payload-sdk/bin/prospero-lld">
+        <exe name="${CXX}" if="CXX" />
+        <fromfile value="" if="GCC_OLD" />
+        <flag value="-debug" if="debug"/>
+        <flag value="-lkernel" />
+        <flag value="-lkernel_sys" />
+        <lib name="-ldl"/>
+        <ext value=""/>
+        <outflag value="-o "/>
+    </linker>
+</xml>

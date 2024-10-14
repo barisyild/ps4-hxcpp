@@ -56,6 +56,10 @@
  #include <sys/wait.h>
 #endif
 
+#ifdef __ORBIS__
+ #include <sys/wait.h>
+#endif
+
 #ifndef CLK_TCK
    #define CLK_TCK   100
 #endif
@@ -157,7 +161,7 @@ bool _hx_std_set_time_locale( String l )
     return false;
 #else
 
-#ifdef NEKO_POSIX
+#if defined(NEKO_POSIX) && !defined(__ORBIS__)
    locale_t lc, old;
    lc = newlocale(LC_TIME_MASK,l.utf8_str(),NULL);
    if( !lc )
@@ -845,18 +849,19 @@ Array<String> _hx_std_sys_env()
 #ifdef HX_ANDROID
    #define tcsetattr(fd,opt,s) ioctl(fd,opt,s)
    #define tcgetattr(fd,s) ioctl(fd,TCGETS,s)
+#endif
 
-   static __inline__ void inline_cfmakeraw(struct termios *s)
-   {
+#if defined(HX_ANDROID) || defined(__ORBIS__)
+    static __inline__ void inline_cfmakeraw(struct termios *s)
+    {
        s->c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL|IXON);
        s->c_oflag &= ~OPOST;
        s->c_lflag &= ~(ECHO|ECHONL|ICANON|ISIG|IEXTEN);
        s->c_cflag &= ~(CSIZE|PARENB);
        s->c_cflag |= CS8;
-   }
+    }
 
-   #define cfmakeraw inline_cfmakeraw
-
+    #define cfmakeraw inline_cfmakeraw
 #endif
 
 /**
