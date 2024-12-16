@@ -8,10 +8,14 @@
     <compiler id="prospero" exe="${CXX}">
         <exe name="${CXX}" if="CXX" />
         <flag value="-c"/>
-        <cppflag value='-Wall' />
-        <cppflag value='-Werror' />
-        <cppflag value='-g' />
-        <cppflag value='-o' />
+        <flag value="-fvisibility=hidden"/>
+        <cppflag value="-frtti"/>
+        <cppflag value="-std=c++11" if="HXCPP_CPP11" />
+        <cppflag value="-std=c++17" if="HXCPP_CPP17"/>
+        <flag value="-g" if="debug"/>
+        <flag value="-O2" unless="debug"/>
+        <flag value="-fpic"/>
+        <flag value="-fPIC"/>
         <flag value='-D__ORBIS__'/>
         <!-- <flag value='-I.'/> -->
         <flag value='-w'/>
@@ -34,6 +38,8 @@
         <flag value="-debug" if="debug"/>
         <flag value="-lkernel" />
         <flag value="-lkernel_sys" />
+		<flag value="-lSceSystemService" />
+		<flag value="-lSceUserService" />
         <lib name="-ldl"/>
         <ext value=""/>
         <outflag value="-o "/>
