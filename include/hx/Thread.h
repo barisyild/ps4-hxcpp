@@ -124,6 +124,12 @@ inline bool HxCreateDetachedThread(void *(*func)(void *), void *param)
 	pthread_attr_t attr;
 	if (pthread_attr_init(&attr) != 0)
 		return false;
+	
+	#ifdef __ORBIS__
+	size_t stack_size = 1 * 1024 * 1024; // 10 MB
+	pthread_attr_setstacksize(&attr, stack_size);
+	#endif
+	
 #ifdef PTHREAD_CREATE_DETACHED
 	if (pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED) != 0)
 		return false;
