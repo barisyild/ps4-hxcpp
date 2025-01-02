@@ -13,7 +13,7 @@
         <cppflag value="-std=c++11" if="HXCPP_CPP11" />
         <cppflag value="-std=c++17" if="HXCPP_CPP17"/>
         <flag value="-g" if="debug"/>
-        <flag value="-O2" unless="debug"/>
+        <!-- <flag value="-O2" unless="debug"/> --> <!-- Do not use because prospero is buggy -->
         <flag value="-fpic"/>
         <flag value="-fPIC"/>
         <flag value='-D__ORBIS__'/>
