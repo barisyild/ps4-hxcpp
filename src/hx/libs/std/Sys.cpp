@@ -420,7 +420,7 @@ void  _hx_std_sys_rename( String path, String newname )
 }
 
 #define STATF(f) o->Add(HX_CSTRING(#f),(int)(s.st_##f))
-
+#define STATF64(f) o->Add(HX_CSTRING(#f),(int64_t)(s.st_##f))
 /**
    sys_stat : string -> {
       gid => int,
@@ -479,7 +479,7 @@ Dynamic _hx_std_sys_stat( String path )
    STATF(mode);
    STATF(nlink);
    STATF(rdev);
-   STATF(size);
+   STATF64(size);
    STATF(mode);
 
    return o;
